@@ -1,0 +1,8 @@
+$ModLoad imfile
+$InputFileName /var/log/auth_sniffer/auth.log
+$InputFileTag auth-logger-logs
+$InputFileStateFile stat-auth-logger-logs
+$InputFileSeverity debug
+$InputFileFacility local3
+$InputRunFileMonitor
+local3.* @@{{ rsyslog_server_hostname }}:{{ rsyslog_server_port }}

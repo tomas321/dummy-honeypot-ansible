@@ -1,0 +1,9 @@
+---
+
+rsyslog:
+  logrotate:
+    file: "custom"
+  logfile: "custom/custom.log"
+  config:
+    path: "/etc/rsyslog.d"
+    facility: "local1"

@@ -1,0 +1,4 @@
+---
+
+# rsyslog_server_hostname: "rsyslog-server.local"
+rsyslog_server_port: 514

@@ -1,0 +1,4 @@
+$template sensor_default_template,"%timegenerated% [%syslogseverity-text%] [%PROCID%] %msg%\n"
+$template log_filename_fmt,"/var/log/{{ rsyslog.logfile }}"
+
+{{ rsyslog.config.facility }}.* log_filename_fmt;sensor_default_template

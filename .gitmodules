@@ -1,0 +1,3 @@
+[submodule "ansible-role-mariadb"]
+	path = ansible-role-mariadb
+	url = git@github.com:tomas321/ansible-role-mariadb.git

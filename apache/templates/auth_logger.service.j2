@@ -1,0 +1,6 @@
+[Unit]
+Description="Log all apache auth credential attempts and successful logins"
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/auth_logger -i {{ auth_logger_sniffer_iface }}

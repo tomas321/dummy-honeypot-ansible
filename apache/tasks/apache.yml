@@ -1,0 +1,42 @@
+---
+
+- name: install dependencies
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ apache_dependencies }}"
+
+- name: copy page
+  become: true
+  copy:
+    src: "iam/index.php"
+    dest: "/var/www/html/iam/"
+
+- name: copy authetication configuration
+  become: true
+  template:
+    src: "vhost.conf.j2"
+    dest: "/etc/apache2/sites-available/000-default.conf"
+
+- name: enable mod_authn_dbd module
+  become: true
+  command: "{{ item }}"
+  changed_when: false
+  loop:
+    - a2enmod dbd
+    - a2enmod authn_dbd
+    - a2enmod socache_shmcb
+    - a2enmod authn_socache
+
+- name: restart apache2
+  become: true
+  service:
+    name: apache2
+    state: restarted
+
+- name: SYSTEMD | reload apache2
+  become: true
+  service:
+    name: apache2
+    state: reloaded

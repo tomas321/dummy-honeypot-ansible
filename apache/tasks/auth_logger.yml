@@ -1,0 +1,45 @@
+---
+
+- name: install dependencies
+  become: true
+  package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ auth_logger_dependencies }}"
+
+- name: clone auth logger repository
+  git:
+    repo: "{{ auth_logger_repo['url'] }}"
+    dest: "{{ auth_logger_repo['dest'] }}"
+    version: "{{ auth_logger_repo['version'] | default(omit) }}"
+
+- name: install scapy
+  become: true
+  pip:
+    executable: pip3
+    name: "{{ item.name }}"
+    state: "{{ item.state }}"
+  loop:
+    - name: scapy
+      state: present
+    - name: "{{ ansible_env['HOME'] }}/{{ auth_logger_repo['dest'] }}"
+      state: latest
+
+- name: copy systemd unit file
+  become: true
+  template:
+    src: "auth_logger.service.j2"
+    dest: "/etc/systemd/system/{{ auth_logger_sniffer_service_name }}.service"
+  register: unit_file
+  notify:
+    - SYSTEMD | "{{ auth_logger_sniffer_service_name }}" restart
+    - SYSTEMD | daemon reload
+  tags: configure
+
+- name: SYSTEMD | start "{{ auth_logger_sniffer_service_name }}"
+  become: true
+  systemd:
+    name: "{{ auth_logger_sniffer_service_name }}"
+    state: started
+    enabled: true
+  tags: configure

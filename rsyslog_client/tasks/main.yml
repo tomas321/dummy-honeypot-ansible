@@ -1,0 +1,32 @@
+---
+
+- name: ensure rsyslog is installed
+  become: true
+  package:
+    name: rsyslog
+    state: present
+  tags: install
+
+- name: RSYSLOG | template mysql forwarding
+  become: true
+  template:
+    src: "forward_mysql_syslogs.conf.j2"
+    dest: "/etc/rsyslog.d/forward_mysql.conf"
+  notify: restart rsyslog
+  tags: configure
+
+- name: RSYSLOG | template auth_logger forwarding
+  become: true
+  template:
+    src: "forward_auth_logger_syslogs.conf.j2"
+    dest: "/etc/rsyslog.d/forward_auth_logger.conf"
+  notify: restart rsyslog
+  tags: configure
+
+- name: SYSTEMD | enable and start rsyslog
+  become: true
+  service:
+    name: rsyslog
+    state: started
+    enabled: true
+  tags: configure

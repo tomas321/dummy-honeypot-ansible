@@ -1,0 +1,27 @@
+---
+
+- name: ensure rsyslog is install
+  become: true
+  package:
+    name: rsyslog
+    state: present
+  tags: install
+
+- name: RSYSLOG | enable TCP reception
+  become: true
+  blockinfile:
+    path: "/etc/rsyslog.conf"
+    block: |
+      module(load="imtcp")
+      input(type="imtcp" port="514")
+    state: present
+  notify: restart rsyslog
+  tags: configure
+
+- name: SYSTEMD | enable and start rsyslog
+  become: true
+  systemd:
+    name: rsyslog
+    enabled: true
+    state: started
+  tags: configure

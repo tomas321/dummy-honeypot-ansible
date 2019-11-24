@@ -1,0 +1,8 @@
+$ModLoad imfile
+$InputFileName /var/log/mysql/mysql.log
+$InputFileTag mysql-logs
+$InputFileStateFile stat-mysql-logs
+$InputFileSeverity debug
+$InputFileFacility local3
+$InputRunFileMonitor
+local3.* @@{{ rsyslog_server_hostname }}:{{ rsyslog_server_port }}

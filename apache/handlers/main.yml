@@ -1,0 +1,16 @@
+---
+# handlers file for brewmaster-backend
+
+- name: SYSTEMD | "{{ auth_logger_sniffer_service_name }}" restart
+  become: true
+  systemd:
+    name: "{{ auth_logger_sniffer_service_name }}"
+    state: restarted
+  tags: configure
+
+- name: SYSTEMD | daemon reload
+  become: true
+  when: unit_file.changed
+  systemd:
+    daemon_reload: true
+  tags: configure

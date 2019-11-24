@@ -1,0 +1,23 @@
+---
+
+apache_dependencies:
+  - apache2
+  - apache2-utils
+  - libaprutil1-dbd-mysql
+
+mariadb_auth:
+  database_name: "test"
+  username: "apache"
+  password: "apache"
+
+auth_logger_dependencies:
+  - python3-pip
+  - git
+  - tcpdump
+
+auth_logger_repo:
+  url: "https://github.com/tomas321/getthatauth"
+  dest: "auth_logger"
+
+auth_logger_sniffer_iface: "eth0"
+auth_logger_sniffer_service_name: "auth_logger"
